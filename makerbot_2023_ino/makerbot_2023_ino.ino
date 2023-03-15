@@ -13,67 +13,75 @@ Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver(0x40);
 
 int bluetooth_signal = 0;
 
-#define SERVOMIN  80  // Minimum value
-#define SERVOMAX  600  // Maximum value
-#define SER1  7
-#define SER2  6
-#define SER3  5
-#define SER4  4
-#define SER5  3
-int pwm1, pwm2, pwm3, pwm4, pwm5;
-int arm_servo1_pos = 90, arm_servo2_pos = 90, arm_servo3_pos = 90, arm_servo4_pos = 90, arm_servo5_pos = 90; 
+#define SERVOMIN  70  // Minimum value
+#define SERVOMAX  520  // Maximum value
+#define SER1  2
+#define SER2  3
+#define SER3  4
+#define SER4  5
 
-void setup() 
-{
-  Serial.begin(115200);
-  btSerial.begin(BT_NAME);
-
-  // Initialize PCA9685
-  pca9685.begin();
- 
-  // Set PWM Frequency to 50Hz
-  pca9685.setPWMFreq(50);
-}
-
-void loop() 
-{
-  bluetoothControl();
-}
+int pwm1, pwm2, pwm3, pwm4;
+int arm_servo1_pos = 90, arm_servo2_pos = 90, arm_servo3_pos = 90, arm_servo4_pos = 50; 
 
 void goForward(int leftSpeed, int rightSpeed)
 {
-  pca9685.setPWM(8, 0, leftSpeed);
+  pca9685.setPWM(14, 4096, 0);
+  pca9685.setPWM(15, 0, leftSpeed);
+  pca9685.setPWM(12, 4096, 0);
+  pca9685.setPWM(13, 0, leftSpeed);
+
+  pca9685.setPWM(8, 0, rightSpeed);
   pca9685.setPWM(9, 4096, 0);
-  pca9685.setPWM(10, 4096, 0);
-  pca9685.setPWM(11, 0, rightSpeed);
-}
-
-void turnRight()
-{
-  pca9685.setPWM(8, 4096, 0);
-  pca9685.setPWM(9, 0, 0);
-  pca9685.setPWM(10, 4096, 0);
-  pca9685.setPWM(11, 0, 0);
-}
-
-void turnLeft()
-{
-  pca9685.setPWM(8, 0, 0);
-  pca9685.setPWM(9, 4096, 0);
-  pca9685.setPWM(10, 0, 0);
-  pca9685.setPWM(11, 4096, 0);
-}
-
-void goBackward( int leftSpeed, int rightSpeed)
-{
-  pca9685.setPWM(8, 4096, 0);
-  pca9685.setPWM(9, 0, leftSpeed);
   pca9685.setPWM(10, 0, rightSpeed);
   pca9685.setPWM(11, 4096, 0);
 }
 
+void turnRight(int leftSpeed, int rightSpeed)
+{
+  pca9685.setPWM(14, 4096, 0);
+  pca9685.setPWM(15, 0, leftSpeed);
+  pca9685.setPWM(12, 4096, 0);
+  pca9685.setPWM(13, 0, leftSpeed);
+
+  pca9685.setPWM(8, 4096, 0);
+  pca9685.setPWM(9, 0, rightSpeed);
+  pca9685.setPWM(10, 4096, 0);
+  pca9685.setPWM(11, 0, rightSpeed);
+}
+
+void turnLeft(int leftSpeed, int rightSpeed)
+{
+  pca9685.setPWM(14, 0, leftSpeed);
+  pca9685.setPWM(15, 4096, 0);
+  pca9685.setPWM(12, 0, leftSpeed);
+  pca9685.setPWM(13, 4096, 0);
+
+  pca9685.setPWM(8, 0, rightSpeed);
+  pca9685.setPWM(9, 4096, 0);
+  pca9685.setPWM(10, 0, rightSpeed);
+  pca9685.setPWM(11, 4096, 0);
+}
+
+void goBackward(int leftSpeed, int rightSpeed)
+{
+  pca9685.setPWM(14, 0, leftSpeed);
+  pca9685.setPWM(15, 4096, 0);
+  pca9685.setPWM(12, 0, leftSpeed);
+  pca9685.setPWM(13, 4096, 0);
+
+  pca9685.setPWM(8, 4096, 0);
+  pca9685.setPWM(9, 0, rightSpeed);
+  pca9685.setPWM(10, 4096, 0);
+  pca9685.setPWM(11, 0, rightSpeed);
+}
+
 void stopBot()
 {
+  pca9685.setPWM(14, 0, 0);
+  pca9685.setPWM(15, 0, 0);
+  pca9685.setPWM(12, 0, 0);
+  pca9685.setPWM(13, 0, 0);
+
   pca9685.setPWM(8, 0, 0);
   pca9685.setPWM(9, 0, 0);
   pca9685.setPWM(10, 0, 0);
@@ -93,25 +101,25 @@ void bluetoothControl()
 
     case 'a':
     {
-      goForward(4069, 4069);
+      goForward(4096, 4096);
       break;
     }
 
     case 'b':
     {
-      goBackward(4069, 4069);
+      goBackward(4096, 4096);
       break;
     }
 
     case 'c':
     {
-      turnLeft();
+      turnLeft(4096, 4096);
       break;
     }
 
     case 'd':
     {
-      turnRight();
+      turnRight(4096, 4096);
       break;
     }
 
@@ -122,7 +130,7 @@ void bluetoothControl()
     }
 
     case 'p':
-      if (arm_servo1_pos < 180)
+      if (arm_servo1_pos < 165)
       {
         arm_servo1_pos = (arm_servo1_pos + 1);
       }
@@ -131,11 +139,11 @@ void bluetoothControl()
     pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
     // Write to PCA9685
     pca9685.setPWM(SER1, 0, pwm1);
-    delay(30);
+    delay(100);
     break;
     
     case 'q':
-      if (arm_servo1_pos > 0)
+      if (arm_servo1_pos > 5)
       {
         arm_servo1_pos = (arm_servo1_pos - 1);
       }
@@ -144,7 +152,7 @@ void bluetoothControl()
     pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
     // Write to PCA9685
     pca9685.setPWM(SER1, 0, pwm1);
-    delay(30);
+    delay(100);
     break;
       
     case 'h':
@@ -159,7 +167,7 @@ void bluetoothControl()
     break;
     
     case 'i':
-      if (arm_servo2_pos > 0)
+      if (arm_servo2_pos > 10)
       {
         arm_servo2_pos = (arm_servo2_pos - 1);
       }
@@ -189,42 +197,55 @@ void bluetoothControl()
     // Write to PCA9685
     pca9685.setPWM(SER3, 0, pwm3);
     delay(30);
-      break;
-      
-    case 'r':
-      if (arm_servo4_pos < 180)
-      {
-        arm_servo4_pos = (arm_servo4_pos + 1);
-      }
-    pwm4 = map(arm_servo4_pos, 0, 180, SERVOMIN, SERVOMAX);
-    // Write to PCA9685
-    pca9685.setPWM(SER4, 0, pwm4);
-    delay(30);
-    break;
-    
-    case 's':
-      if (arm_servo4_pos > 0)
-      {
-        arm_servo4_pos = (arm_servo4_pos - 1);
-      }
-    pwm4 = map(arm_servo4_pos, 0, 180, SERVOMIN, SERVOMAX);
-    // Write to PCA9685
-    pca9685.setPWM(SER4, 0, pwm4);
-    delay(30);
     break;
       
     case 'l':
-    pwm5 = map(90, 0, 180, SERVOMIN, SERVOMAX);
+    pwm4 = map(45, 0, 180, SERVOMIN, SERVOMAX);
     // Write to PCA9685
-    pca9685.setPWM(SER5, 0, pwm5);
+    pca9685.setPWM(SER4, 0, pwm4);
     delay(30);
     break;
     
     case 'm':
-    pwm5 = map(35, 0, 180, SERVOMIN, SERVOMAX);
+    pwm4 = map(107, 0, 180, SERVOMIN, SERVOMAX);
     // Write to PCA9685
-    pca9685.setPWM(SER5, 0, pwm5);
+    pca9685.setPWM(SER4, 0, pwm4);
     delay(30);
     break;
   }
+}
+
+void servo_init()
+{
+    pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
+    pwm2 = map(arm_servo2_pos, 0, 180, SERVOMIN, SERVOMAX);
+    pwm3 = map(arm_servo3_pos, 0, 180, SERVOMIN, SERVOMAX);
+    pwm4 = map(arm_servo4_pos, 0, 180, SERVOMIN, SERVOMAX);
+    pca9685.setPWM(SER1, 0, pwm1);
+    delay(30);
+    pca9685.setPWM(SER2, 0, pwm2);
+    delay(30);
+    pca9685.setPWM(SER3, 0, pwm3);
+    delay(30);
+    pca9685.setPWM(SER4, 0, pwm4);
+    delay(30);
+
+}
+void setup() 
+{
+  Serial.begin(115200);
+  btSerial.begin(BT_NAME);
+
+  // Initialize PCA9685
+  pca9685.begin();
+ 
+  // Set PWM Frequency to 50Hz
+  pca9685.setPWMFreq(50);
+
+  servo_init();
+}
+
+void loop() 
+{
+  bluetoothControl();
 }
