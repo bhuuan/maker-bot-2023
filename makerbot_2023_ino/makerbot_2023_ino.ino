@@ -243,6 +243,11 @@ void setup()
   pca9685.setPWMFreq(50);
 
   servo_init();
+
+  pinMode(SEN_1_PIN,INPUT);
+  pinMode(SEN_2_PIN,INPUT);
+  pinMode(SEN_3_PIN,INPUT);
+  pinMode(SEN_4_PIN,INPUT);
 }
 
 void loop() 
