@@ -139,7 +139,7 @@ void bluetoothControl()
     pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
     // Write to PCA9685
     pca9685.setPWM(SER1, 0, pwm1);
-    delay(100);
+    delay(30);
     break;
     
     case 'q':
@@ -152,7 +152,7 @@ void bluetoothControl()
     pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
     // Write to PCA9685
     pca9685.setPWM(SER1, 0, pwm1);
-    delay(100);
+    delay(30);
     break;
       
     case 'h':
@@ -212,6 +212,21 @@ void bluetoothControl()
     pca9685.setPWM(SER4, 0, pwm4);
     delay(30);
     break;
+
+    case 'r':
+      //xi nhan trai
+      digitalWrite(2, 1);
+    break;
+        
+    case 's':
+      //xi nhan phai
+      digitalWrite(32, 1);
+    break;
+
+    case 'n':
+      digitalWrite(2, 0);
+      digitalWrite(32, 0);
+    break;
   }
 }
 
@@ -242,7 +257,11 @@ void setup()
   // Set PWM Frequency to 50Hz
   pca9685.setPWMFreq(50);
 
-  servo_init();
+  //servo_init();
+  pinMode(2, OUTPUT);
+  pinMode(32, OUTPUT);
+  digitalWrite(2, 0);
+  digitalWrite(32, 0);
 }
 
 void loop() 

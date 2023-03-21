@@ -10,12 +10,12 @@ Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver(0x40);
 
 //#define SERVOMIN  70  // Minimum value
 //#define SERVOMAX  520  // Maximum value
-#define SERVOMIN  70  // Minimum value
-#define SERVOMAX  520  // Maximum value
-#define SER1  4
+#define SERVOMIN  80  // Minimum value
+#define SERVOMAX  510  // Maximum value
+#define SER1  5
 
-int pwm1, pwm2, pwm3, pwm4, pwm5;
-int arm_servo1_pos = 0; 
+int pwm1;
+int arm_servo1_pos; 
 
 void setup() {
   // put your setup code here, to run once:
@@ -25,23 +25,23 @@ void setup() {
   // Set PWM Frequency to 50Hz
   pca9685.setPWMFreq(50);
 
-    arm_servo1_pos = 0;
-    pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
-    // Write to PCA9685
-    pca9685.setPWM(SER1, 0, pwm1);
-    delay(5000);
-    
-    arm_servo1_pos = 180;
-    pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
-    // Write to PCA9685
-    pca9685.setPWM(SER1, 0, pwm1);
-    delay(5000);
-    
     arm_servo1_pos = 70;
     pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
     // Write to PCA9685
     pca9685.setPWM(SER1, 0, pwm1);
     delay(5000);
+    
+    /*arm_servo1_pos = 70;
+    pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
+    // Write to PCA9685
+    pca9685.setPWM(SER1, 0, pwm1);
+    delay(5000);
+    
+    arm_servo1_pos = 0;
+    pwm1 = map(arm_servo1_pos, 0, 180, SERVOMIN, SERVOMAX);
+    // Write to PCA9685
+    pca9685.setPWM(SER1, 0, pwm1);
+    delay(5000);*/
 }
 
 void loop() {
