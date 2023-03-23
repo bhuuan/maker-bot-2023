@@ -216,10 +216,12 @@ void bluetoothControl()
     case 'r':
       //xi nhan trai
       digitalWrite(2, 1);
+      digitalWrite(32, 0);
     break;
         
     case 's':
       //xi nhan phai
+      digitalWrite(2, 0);
       digitalWrite(32, 1);
     break;
 
