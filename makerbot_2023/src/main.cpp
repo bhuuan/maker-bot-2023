@@ -101,25 +101,25 @@ void bluetoothControl()
 
     case 'a':
     {
-      goForward(4096, 4096);
+      goForward(2048, 2048);
       break;
     }
 
     case 'b':
     {
-      goBackward(4096, 4096);
+      goBackward(2048, 2048);
       break;
     }
 
     case 'c':
     {
-      turnLeft(4096, 4096);
+      turnLeft(2048, 2048);
       break;
     }
 
     case 'd':
     {
-      turnRight(4096, 4096);
+      turnRight(2048, 2048);
       break;
     }
 
@@ -213,19 +213,19 @@ void bluetoothControl()
     delay(30);
     break;
 
-    case 'r':
+    case 'f':
       //xi nhan trai
       digitalWrite(2, 1);
       digitalWrite(32, 0);
     break;
         
-    case 's':
+    case 'e':
       //xi nhan phai
       digitalWrite(2, 0);
       digitalWrite(32, 1);
     break;
 
-    case 'f':
+    case 'o':
       digitalWrite(2, 0);
       digitalWrite(32, 0);
     break;
