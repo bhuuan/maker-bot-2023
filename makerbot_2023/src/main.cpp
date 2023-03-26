@@ -1,6 +1,6 @@
 #include <BluetoothSerial.h>
 BluetoothSerial btSerial;
-#define BT_NAME "ESP32BT-SCT" // Set bluetooth name
+#define BT_NAME "ESP32BT-SCT-Test" // Set bluetooth name
 
 // Include Wire Library for I2C
 #include <Wire.h>
@@ -30,7 +30,7 @@ void goForward(int leftSpeed, int rightSpeed)
   pca9685.setPWM(12, 4096, 0);
   pca9685.setPWM(13, 0, leftSpeed);
 
-  pca9685.setPWM(8, 0, rightSpeed);
+  pca9685.setPWM(8, 0, rightSpeed);-
   pca9685.setPWM(9, 4096, 0);
   pca9685.setPWM(10, 0, rightSpeed);
   pca9685.setPWM(11, 4096, 0);
@@ -101,25 +101,25 @@ void bluetoothControl()
 
     case 'a':
     {
-      goForward(4096, 4096);
+      goForward(2048, 2048);
       break;
     }
 
     case 'b':
     {
-      goBackward(4096, 4096);
+      goBackward(2048, 2048);
       break;
     }
 
     case 'c':
     {
-      turnLeft(4096, 4096);
+      turnLeft(2048, 2048);
       break;
     }
 
     case 'd':
     {
-      turnRight(4096, 4096);
+      turnRight(2048, 2048);
       break;
     }
 
@@ -213,19 +213,25 @@ void bluetoothControl()
     delay(30);
     break;
 
-    case 'r':
+    case 'f':
       //xi nhan trai
       digitalWrite(2, 1);
+      digitalWrite(32, 0);
     break;
         
     case 's':
       //xi nhan phai
+      digitalWrite(2, 0);
       digitalWrite(32, 1);
     break;
 
-    case 'n':
+    case 'o':
       digitalWrite(2, 0);
       digitalWrite(32, 0);
+    break;
+    case 'n':
+      digitalWrite(2, 1);
+      digitalWrite(32, 1);
     break;
   }
 }
